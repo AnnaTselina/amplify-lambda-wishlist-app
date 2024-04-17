@@ -9,15 +9,19 @@ import {
   WithAuthenticatorProps,
   withAuthenticator,
 } from "@aws-amplify/ui-react";
+import { Header } from "./components";
 
 Amplify.configure(config);
 
-const Home = ({ signOut, user }: WithAuthenticatorProps) => {
+const Home = ({ user }: WithAuthenticatorProps) => {
   return (
-    <main className={styles.main}>
-      <p>My amplify project</p>
-      <p>{`User: ${user?.username}`}</p>
-    </main>
+    <>
+      <Header />
+      <main className={styles.main}>
+        <p>My amplify project</p>
+        <p>{`User: ${user?.username}`}</p>
+      </main>
+    </>
   );
 };
 
