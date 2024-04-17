@@ -1,5 +1,5 @@
 {
-  "projectName": "wishlistapp",
+  "projectName": "amplifyWishlist",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {
@@ -7,8 +7,8 @@
     "config": {
       "SourceDir": "src",
       "DistributionDir": "build",
-      "BuildCommand": "npm next build",
-      "StartCommand": "npm next start"
+      "BuildCommand": "npm run build",
+      "StartCommand": "npm run start"
     }
   },
   "providers": [
