@@ -1,7 +1,10 @@
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
+import { IWishlistEventHandler } from "./types";
 
-class WishlistEventHandler {
+class WishlistEventHandler implements IWishlistEventHandler {
+  dbClient: DynamoDBDocumentClient;
   responseObject = {
     statusCode: null,
     headers: {
@@ -10,10 +13,10 @@ class WishlistEventHandler {
     },
     body: {},
   };
-  constructor(dbClient) {
+  constructor(dbClient: DynamoDBDocumentClient) {
     this.dbClient = dbClient;
   }
-  constructResponseObject(status, success, message) {
+  constructResponseObject(status, success, message?) {
     return {
       ...this.responseObject,
       statusCode: status,

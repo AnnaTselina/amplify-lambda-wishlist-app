@@ -1,0 +1,12 @@
+{
+  "path": "/wishlist",
+  "httpMethod": "POST",
+  "headers": {
+    "Accept": "*/*",
+    "content-type": "application/json; charset=UTF-8"
+  },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "requestContext": {},
+  "body": "{}"
+}

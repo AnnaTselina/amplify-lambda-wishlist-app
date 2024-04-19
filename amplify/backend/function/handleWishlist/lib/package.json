@@ -9,6 +9,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@aws-sdk/lib-dynamodb": "^3.556.0",
     "uuid": "^9.0.1"
   }
 }
