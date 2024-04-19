@@ -10,30 +10,26 @@ import {
   withAuthenticator,
 } from "@aws-amplify/ui-react";
 import { Header } from "./components";
+import { post } from "aws-amplify/api";
 
 Amplify.configure(config);
 
 const Home = ({ user }: WithAuthenticatorProps) => {
-  const handleCreateWishlist = () => {
-    // instantiate a headers object
-    const myHeaders = new Headers();
-    // add content type header to object
-    myHeaders.append("Content-Type", "application/json");
+  const handleCreateWishlist = async () => {
+    try {
+      const restOperation = post({
+        apiName: "wishlistAPI",
+        path: "/wishlist",
+        options: {
+          body: {},
+        },
+      });
 
-    // create a JSON object with parameters for API call and store in a variable
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      // redirect: "follow",
-    };
-
-    fetch(
-      "https://6zmhwmkyyg.execute-api.eu-north-1.amazonaws.com/dev",
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => alert(JSON.parse(result).body))
-      .catch((error) => console.log("error", error));
+      const { body } = await restOperation.response;
+      const response = await body.json();
+    } catch (e: any) {
+      console.log("POST call failed: ", JSON.parse(e.response.body));
+    }
   };
 
   return (

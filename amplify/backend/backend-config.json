@@ -1,6 +1,22 @@
 {
+  "api": {
+    "wishlistAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "handleWishlist"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
-    "amplifywishlist215e9922": {
+    "wishlist6a2b7784": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -25,6 +41,37 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "handleWishlist": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_handleWishlist_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "handleWishlist"
+        }
+      ]
+    },
+    "AMPLIFY_function_handleWishlist_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "handleWishlist"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "WishlistsTable": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     }
   }
 }
