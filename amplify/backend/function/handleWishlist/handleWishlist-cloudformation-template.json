@@ -79,7 +79,9 @@
           ]
         },
         "Runtime": "nodejs18.x",
-        "Layers": [],
+        "Layers": [
+          "arn:aws:lambda:eu-north-1:516867579814:layer:NodeJSLayer:3"
+        ],
         "Timeout": 25
       }
     },

@@ -37,18 +37,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
+var handler_js_1 = require("./handler.js");
+var client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+var lib_dynamodb_1 = require("@aws-sdk/lib-dynamodb");
+/**
+ * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
+ */
+var ddbClient = new client_dynamodb_1.DynamoDBClient({ region: process.env.TABLE_REGION });
+var ddbDocClient = lib_dynamodb_1.DynamoDBDocumentClient.from(ddbClient);
 var handler = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var wishlistEventHandlerInstance;
     return __generator(this, function (_a) {
-        console.log("EVENT: ".concat(JSON.stringify(event)));
-        return [2 /*return*/, {
-                statusCode: 200,
-                //  Uncomment below to enable CORS requests
-                //  headers: {
-                //      "Access-Control-Allow-Origin": "*",
-                //      "Access-Control-Allow-Headers": "*"
-                //  },
-                body: JSON.stringify("Hello from Lambda!"),
-            }];
+        switch (_a.label) {
+            case 0:
+                wishlistEventHandlerInstance = new handler_js_1.default(ddbDocClient);
+                console.log("EVENT: ".concat(JSON.stringify(event)));
+                if (event.path !== "/wishlist") {
+                    return [2 /*return*/, wishlistEventHandlerInstance.constructResponseObject(500, false, "Internal server error")];
+                }
+                return [4 /*yield*/, wishlistEventHandlerInstance.handleRoute(event)];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
     });
 }); };
 exports.handler = handler;
