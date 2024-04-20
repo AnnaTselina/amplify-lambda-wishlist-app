@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "amplify:handleWishlist": "tsc -p amplify/backend/function/handleWishlist/tsconfig.json"
+    "_amplify:handleWishlist": "tsc -p amplify/backend/function/handleWishlist/tsconfig.json && cd -"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.7",
