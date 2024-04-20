@@ -1,7 +1,17 @@
 {
-  "extends": "../tsconfig",
   "compilerOptions": {
-    "outDir": "./src"
-  },
-  "include": ["lib"]
+    "allowSyntheticDefaultImports": true,
+    "lib": ["dom", "esnext"],
+    "module": "commonjs",
+
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "outDir": "./src",
+    "baseUrl": "./",
+    "rootDir": "./lib",
+    "paths": {
+      "src": ["./lib"]
+    }
+  }
 }
