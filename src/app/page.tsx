@@ -1,20 +1,10 @@
-"use client";
-
 import styles from "./page.module.css";
 import "@aws-amplify/ui-react/styles.css";
 
-import { Amplify } from "aws-amplify";
-import config from "../amplifyconfiguration.json";
-import {
-  WithAuthenticatorProps,
-  withAuthenticator,
-} from "@aws-amplify/ui-react";
-import { Header } from "./components";
+import { Header } from "../components";
 import { post } from "aws-amplify/api";
 
-Amplify.configure(config);
-
-const Home = ({ user }: WithAuthenticatorProps) => {
+const Home = () => {
   const handleCreateWishlist = async () => {
     try {
       const restOperation = post({
@@ -37,11 +27,10 @@ const Home = ({ user }: WithAuthenticatorProps) => {
       <Header />
       <main className={styles.main}>
         <p>My amplify project</p>
-        <button onClick={handleCreateWishlist}>Create wishlist</button>
-        <p>{`User: ${user?.username}`}</p>
+        {/* <button onClick={handleCreateWishlist}>Create wishlist</button> */}
       </main>
     </>
   );
 };
 
-export default withAuthenticator(Home);
+export default Home;

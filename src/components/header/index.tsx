@@ -1,14 +1,14 @@
-import { SimpleError } from "@/app/types";
+import { SimpleError } from "@/types";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { signOut } from "aws-amplify/auth";
 import { toast } from "react-toastify";
 
 const Header = () => {
-  const { user } = useAuthenticator((context) => [context.user]);
+  //const { user } = useAuthenticator((context) => [context.user]);
 
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   const handleLogOut = async () => {
     try {
@@ -22,9 +22,7 @@ const Header = () => {
   };
 
   return (
-    <header>
-      <button onClick={handleLogOut}>Log Out</button>
-    </header>
+    <header>{/* <button onClick={handleLogOut}>Log Out</button> */}</header>
   );
 };
 
