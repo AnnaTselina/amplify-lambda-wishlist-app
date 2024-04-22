@@ -10,14 +10,18 @@
     "amplify:handleWishlist": "cd amplify/backend/function/handleWishlist/lib && npm install && cd ../ && tsc -p ./tsconfig.json && cd -"
   },
   "dependencies": {
+    "@aws-amplify/adapter-nextjs": "^1.0.28",
     "@aws-amplify/ui-react": "^6.1.7",
-    "@mantine/core": "^7.8.0",
-    "@mantine/hooks": "^7.8.0",
+    "@mantine/core": "^6.0.9",
+    "@mantine/form": "^7.4.0",
+    "@mantine/hooks": "^6.0.9",
+    "@mantine/next": "^6.0.9",
     "aws-amplify": "^6.0.28",
     "next": "14.2.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "@svgr/webpack": "^8.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

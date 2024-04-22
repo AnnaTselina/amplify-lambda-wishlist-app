@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Amplify } from "aws-amplify";
 import config from "../amplifyconfiguration.json";
 import AuthenticationProvider from "@/providers/authentication";
-import { MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
-import { myTheme } from "@/styles/mantineTheme";
+import MantineThemeProvider from "@/providers/mantine";
+import MainLayout from "@/components/mainLayout";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <MantineProvider theme={myTheme}>
-          <AuthenticationProvider>{children}</AuthenticationProvider>
-        </MantineProvider>
+        <MantineThemeProvider>
+          <AuthenticationProvider>
+            <MainLayout>{children}</MainLayout>
+          </AuthenticationProvider>
+        </MantineThemeProvider>
       </body>
     </html>
   );
