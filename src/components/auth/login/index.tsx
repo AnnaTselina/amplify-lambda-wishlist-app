@@ -10,7 +10,7 @@ import {
 import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import GoogleSocialIcon from "/public/icons/social-google.svg";
 import { useForm } from "@mantine/form";
-import { EMAIL_REGEX } from "@/utils/constants";
+import { EMAIL_REGEX, ROUTES } from "@/utils/constants";
 import { toast } from "react-toastify";
 import { AmplifySignUpResult, SimpleError } from "@/types";
 import { useRouter } from "next/navigation";
@@ -41,8 +41,7 @@ const LoginForm = () => {
         });
 
         if (isSignedIn && nextStep.signInStep === AmplifySignUpResult.DONE) {
-          // TODO: fix
-          //router.reload();
+          window.location.reload();
         } else if (
           nextStep.signInStep === AmplifySignUpResult.CONFIRM_SIGN_UP
         ) {
@@ -60,7 +59,7 @@ const LoginForm = () => {
   return (
     <>
       <Title variant="formHeading">Log in</Title>
-      <form id="log-in-form">
+      <form onSubmit={handleLogIn} id="log-in-form">
         <TextInput
           placeholder="Your email"
           {...logInForm.getInputProps("email")}

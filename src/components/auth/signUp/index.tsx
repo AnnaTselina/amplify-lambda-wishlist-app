@@ -98,8 +98,7 @@ const SignUpForm = () => {
         signInOutput.isSignedIn &&
         signInOutput.nextStep.signInStep === AmplifySignUpResult.DONE
       ) {
-        // TODO: fix
-        //router.reload();
+        window.location.reload();
       }
     } catch (error) {
       toast.error(

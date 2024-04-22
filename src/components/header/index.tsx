@@ -1,18 +1,28 @@
+"use client";
 import { SimpleError } from "@/types";
+import { ROUTES } from "@/utils/constants";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { Button, Flex } from "@mantine/core";
 import { signOut } from "aws-amplify/auth";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const Header = () => {
-  //const { user } = useAuthenticator((context) => [context.user]);
+  const { authStatus, user } = useAuthenticator((context) => [
+    context.authStatus,
+    context.user,
+  ]);
 
-  // if (!user) {
-  //   return null;
-  // }
+  const router = useRouter();
 
   const handleLogOut = async () => {
     try {
+      const isSRPUser = user.signInDetails?.authFlowType === "USER_SRP_AUTH";
       await signOut();
+
+      if (isSRPUser) {
+        router.push(ROUTES.home);
+      }
     } catch (error) {
       toast.error(
         (error as SimpleError).message ||
@@ -22,7 +32,15 @@ const Header = () => {
   };
 
   return (
-    <header>{/* <button onClick={handleLogOut}>Log Out</button> */}</header>
+    <header>
+      <Flex bg="main.2" p={14} justify="flex-end">
+        {authStatus === "authenticated" && (
+          <Button variant="ghost" onClick={handleLogOut}>
+            Log out
+          </Button>
+        )}
+      </Flex>
+    </header>
   );
 };
 
