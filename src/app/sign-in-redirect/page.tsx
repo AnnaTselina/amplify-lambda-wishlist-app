@@ -1,23 +1,26 @@
 "use client";
-
 import { ROUTES } from "@/utils/constants";
-import { useAuthenticator } from "@aws-amplify/ui-react";
 import { Center, Loader } from "@mantine/core";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { getCurrentUser } from "aws-amplify/auth";
 
 const SignInRedirect = () => {
-  const { user } = useAuthenticator((context) => [context.user]);
-
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
-      router.push(ROUTES.wishlists);
-    } else {
-      router.push(ROUTES.home)
-    }
-  }, [user]);
+    getCurrentUser()
+      .then((data: { userId: string }) => {
+        if (data.userId) {
+          router.push(ROUTES.wishlists);
+        } else {
+          router.push(ROUTES.home);
+        }
+      })
+      .catch(() => {
+        router.push(ROUTES.home);
+      });
+  }, []);
 
   return (
     <Center mih="90vh">
