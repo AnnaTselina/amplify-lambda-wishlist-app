@@ -5,7 +5,7 @@ Amazon services that are used: Amplify, Cognito, IAM, API Gateway, Lambda, Dynam
 
 [Schema of AWS Services and interactions]: (https://app.eraser.io/workspace/Ot8JcfetK5mPsqTIno59)
 
-<img width="485" alt="image" src="https://github.com/AnnaTselina/amplify-lambda-wishlist-app/assets/55737365/bbf2c68b-f5b9-4f4b-8d48-0c9de268e2fe">
+<img width="631" alt="image" src="https://github.com/AnnaTselina/amplify-lambda-wishlist-app/assets/55737365/7626913a-ac04-4fed-991f-b37e2d7f0e22">
 
 Lambda function is using lambda layer to encapsulate node_modules (layer can be reused across miltiple lambda functions).
 Unfortunately, native lambda functions can't be written and pushed to AWS in TypeScript. Nice workaround that is implemented in that project is described [here](https://betterprogramming.pub/converting-amplify-lambdas-to-typescript-e97dc9f1eed2).
