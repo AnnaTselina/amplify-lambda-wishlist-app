@@ -15,7 +15,7 @@ export const myTheme: MantineThemeOverride = {
       "#343a40",
       "#212529",
     ],
-    main: ["#000000", "#3d2645", "#832161", "#da4167", "#f0eff4"],
+    main: ["#000000", "#3d2645", "#832161", "#da4167", "#83216152", "#f0eff4"],
   },
   spacing: { md: "24px" },
   radius: { md: "12px" },
@@ -71,7 +71,7 @@ export const myTheme: MantineThemeOverride = {
           root: {
             backgroundColor: theme.colors.main[3],
             padding: "4px 20px",
-            color: theme.colors.main[4],
+            color: theme.colors.main[5],
             borderRadius: "8px",
             fontWeight: 500,
 
@@ -86,8 +86,21 @@ export const myTheme: MantineThemeOverride = {
         ghost: (theme) => ({
           root: {
             backgroundColor: "transparent",
-            border: `1px solid ${theme.colors.main[4]}`,
-            color: theme.colors.main[4],
+            border: `1px solid ${theme.colors.main[2]}`,
+            color: theme.colors.main[2],
+          },
+        }),
+        light: (theme) => ({
+          root: {
+            backgroundColor: `${theme.colors.main[3]}80`,
+            color: theme.colors.grey[0],
+            fontWeight: "normal",
+            svg: {
+              marginRight: "10px",
+            },
+            ":hover": {
+              backgroundColor: `${theme.colors.main[2]}`,
+            },
           },
         }),
       },

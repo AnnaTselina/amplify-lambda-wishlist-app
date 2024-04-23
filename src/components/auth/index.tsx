@@ -15,7 +15,7 @@ const Auth = () => {
 
         <Container
           p={50}
-          bg="main.4"
+          bg="main.5"
           ml="unset"
           mr="unset"
           mih="25rem"

@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Container variant="centered" bg="main.2" maw="unset" mih="100vh" p={0}>
+    <Container variant="centered" bg="main.4" maw="unset" mih="100vh" p={0}>
       {children}
       <ToastContainer />
     </Container>

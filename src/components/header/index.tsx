@@ -33,7 +33,7 @@ const Header = () => {
 
   return (
     <header>
-      <Flex bg="main.2" p={14} justify="flex-end">
+      <Flex p={14} justify="flex-end">
         {authStatus === "authenticated" && (
           <Button variant="ghost" onClick={handleLogOut}>
             Log out

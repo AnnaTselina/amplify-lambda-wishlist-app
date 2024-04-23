@@ -1,4 +1,5 @@
 import { Header } from "@/components";
+import CreateWishlist from "@/components/createWishlist";
 import PageContainer from "@/components/pageContainer";
 
 const Wishlists = () => {
@@ -6,7 +7,7 @@ const Wishlists = () => {
     <>
       <Header />
       <PageContainer>
-        <div>Wishlists page</div>
+        <CreateWishlist />
       </PageContainer>
     </>
   );

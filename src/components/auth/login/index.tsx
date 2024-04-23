@@ -10,10 +10,9 @@ import {
 import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import GoogleSocialIcon from "/public/icons/social-google.svg";
 import { useForm } from "@mantine/form";
-import { EMAIL_REGEX, ROUTES } from "@/utils/constants";
+import { EMAIL_REGEX } from "@/utils/constants";
 import { toast } from "react-toastify";
 import { AmplifySignUpResult, SimpleError } from "@/types";
-import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const logInForm = useForm({
@@ -28,8 +27,6 @@ const LoginForm = () => {
       password: (value) => (value.length ? null : "Please enter password"),
     },
   });
-
-  const router = useRouter();
 
   const handleLogIn = async (e: React.FormEvent) => {
     e.preventDefault();
