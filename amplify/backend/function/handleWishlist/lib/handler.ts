@@ -26,7 +26,7 @@ class WishlistEventHandler implements IWishlistEventHandler {
   async handleRoute(event) {
     switch (event.httpMethod) {
       case "POST":
-        return await this.createWishlist();
+        return await this.createWishlist(event);
       default:
         return this.constructResponseObject(
           404,
@@ -35,14 +35,24 @@ class WishlistEventHandler implements IWishlistEventHandler {
         );
     }
   }
-  async createWishlist() {
+  async createWishlist(event) {
+    const wishlistName = JSON.parse(event.body).name;
+
+    if (!wishlistName) {
+      return this.constructResponseObject(
+        400,
+        false,
+        "Wishlist name has to be provided."
+      );
+    }
+
     try {
       await this.dbClient.send(
         new PutCommand({
           TableName: "WishlistsTable-dev",
           Item: {
             id: uuidv4(),
-            name: "First ie",
+            name: wishlistName,
           },
         })
       );

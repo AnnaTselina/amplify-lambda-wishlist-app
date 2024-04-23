@@ -8,5 +8,7 @@
   "queryStringParameters": null,
   "pathParameters": null,
   "requestContext": {},
-  "body": "{}"
+  "body": {
+    "name": "Birthday"
+  }
 }

@@ -36,9 +36,8 @@ const CreateWishlist = () => {
         setWishlistName("");
       } catch (e: any) {
         toast.error(
-          e.response.body
-            ? JSON.parse(e.response.body)
-            : "Error occurred trying to create wish list"
+          JSON.parse(e.response?.body)?.message ||
+            "Error occurred trying to create wish list"
         );
       }
     }
