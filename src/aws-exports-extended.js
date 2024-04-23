@@ -11,7 +11,7 @@ const updatedConfig = {
     redirectSignOut:
       process.env.NODE_ENV === "development"
         ? "http://localhost:3000/"
-        : config.oauth.redirectSignIn,
+        : config.oauth.redirectSignOut,
   },
 };
 
