@@ -33,7 +33,6 @@ export async function middleware(request: NextRequest) {
       return response;
     }
   }
-  return response;
 }
 
 export const config = {
