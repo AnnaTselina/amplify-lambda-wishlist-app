@@ -1,6 +1,6 @@
 "use client";
 import { Amplify } from "aws-amplify";
-import config from "../../amplifyconfiguration.json";
+import config from "../../aws-exports-extended.js";
 import { Authenticator } from "@aws-amplify/ui-react";
 
 Amplify.configure(config, { ssr: true });
