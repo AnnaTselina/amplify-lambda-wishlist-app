@@ -10,7 +10,7 @@ Amazon services that are used: Amplify, Cognito, IAM, API Gateway, Lambda, Dynam
 Lambda function is using lambda layer to encapsulate node_modules (layer can be reused across miltiple lambda functions).
 Unfortunately, native lambda functions can't be written and pushed to AWS in TypeScript. Nice workaround that is implemented in that project is described [here](https://betterprogramming.pub/converting-amplify-lambdas-to-typescript-e97dc9f1eed2).
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) 14 (with app router) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). [Mantine](https://v6.mantine.dev/) library is used for creating UI.
 
 ## Getting Started
 
