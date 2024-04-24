@@ -28,6 +28,8 @@ class WishlistEventHandler implements IWishlistEventHandler {
         return await this.getWishlists(event);
       case "POST":
         return await this.createWishlist(event);
+      case "PUT":
+        return await this.updateWishlist(event);
       default:
         return this.constructResponseObject(
           404,
@@ -123,6 +125,63 @@ class WishlistEventHandler implements IWishlistEventHandler {
       );
 
       return this.constructResponseObject(200, true, null, wishlists.Item);
+    } catch (err) {
+      return this.constructResponseObject(
+        500,
+        false,
+        err.message || "Internal server error"
+      );
+    }
+  }
+  async updateWishlist(event) {
+    try {
+      const userCognitoIdentityId =
+        event.requestContext.identity.cognitoIdentityId;
+      const parsedBody = JSON.parse(event.body);
+
+      //find wishlist
+      const userWishlists = await this.dbClient.send(
+        new GetCommand({
+          TableName: "usersWishlists-dev",
+          Key: {
+            cognitoIdentityId: userCognitoIdentityId,
+          },
+        })
+      );
+
+      if (!userWishlists.Item || !parsedBody.id) {
+        return this.constructResponseObject(
+          400,
+          false,
+          "User wishlists not found or wishlist id not provided."
+        );
+      }
+
+      const updatedWishlist = userWishlists.Item.wishlists[parsedBody.id];
+
+      const command = new UpdateCommand({
+        TableName: "usersWishlists-dev",
+        Key: {
+          cognitoIdentityId: event.requestContext.identity.cognitoIdentityId,
+        },
+        UpdateExpression: `SET wishlists.#wishlistKey = :updateWishlist`,
+        ExpressionAttributeValues: {
+          ":updateWishlist": { ...updatedWishlist, ...parsedBody.updated },
+        },
+        ExpressionAttributeNames: {
+          "#wishlistKey": updatedWishlist.id,
+        },
+        ReturnValues: "ALL_NEW",
+      });
+
+      const response = await this.dbClient.send(command);
+
+      return this.constructResponseObject(
+        200,
+        true,
+        null,
+        response.Attributes.wishlists[updatedWishlist.id]
+      );
     } catch (err) {
       return this.constructResponseObject(
         500,
