@@ -1,58 +1,14 @@
 "use client";
 import { IWishlist } from "@/types";
-import {
-  Card,
-  Flex,
-  Text,
-  Group,
-  ActionIcon,
-  Modal,
-  TextInput,
-  Button,
-} from "@mantine/core";
-import EditIcon from "/public/icons/icons8-edit.svg";
+import { Flex, Text, Center } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
-import { put } from "aws-amplify/api";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import WishlistCard from "../wishlistCard";
+import EditWishlist from "../editWishlist";
 
 const WishlistsAll = ({ wishlists }: { wishlists: IWishlist[] }) => {
   const [editWishlistModalOpened, { open, close }] = useDisclosure(false);
   const [editedWishlist, setEditedWishlist] = useState<IWishlist | null>(null);
-
-  const router = useRouter();
-
-  const handleEditWishlist = () => {
-    if (!editedWishlist) {
-      return;
-    }
-
-    try {
-      put({
-        apiName: "wishlistAPI",
-        path: "/wishlist",
-        options: {
-          body: {
-            id: editedWishlist.id,
-            updated: {
-              name: editedWishlist.name,
-            },
-          },
-        },
-      });
-
-      close();
-      setEditedWishlist(null);
-      router.refresh();
-    } catch (e: any) {
-      toast.error(
-        JSON.parse(e.response?.body)?.message ||
-          "Error occurred trying to update wish list"
-      );
-    }
-  };
 
   return (
     <>
@@ -69,40 +25,19 @@ const WishlistsAll = ({ wishlists }: { wishlists: IWishlist[] }) => {
           ))}
         </Flex>
       ) : (
-        "No wishlists"
+        <Center h="50vh">
+          <Text fz="l" mt="md" color="grey.0">
+            No wishlists! Let's create one...
+          </Text>
+        </Center>
       )}
-      <Modal
-        opened={editWishlistModalOpened && !!editedWishlist}
-        onClose={close}
-        title="Edit wishlist"
-        centered
-        overlayProps={{
-          color: "grey.3",
-          opacity: 0.55,
-          blur: 3,
-        }}
-      >
-        <>
-          <TextInput
-            placeholder="Name"
-            label="Name"
-            value={editedWishlist?.name}
-            onChange={(event) =>
-              setEditedWishlist((state) => ({
-                ...state!,
-                name: event.target.value,
-              }))
-            }
-          />
-          <Button
-            variant="primary"
-            disabled={!editedWishlist?.name.length}
-            onClick={handleEditWishlist}
-          >
-            Save
-          </Button>
-        </>
-      </Modal>
+
+      <EditWishlist
+        editedWishlist={editedWishlist}
+        setEditedWishlist={setEditedWishlist}
+        modalOpened={editWishlistModalOpened}
+        closeModal={close}
+      />
     </>
   );
 };

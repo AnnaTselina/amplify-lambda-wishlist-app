@@ -71,7 +71,7 @@ export const myTheme: MantineThemeOverride = {
           root: {
             backgroundColor: theme.colors.main[3],
             padding: "4px 20px",
-            color: theme.colors.main[5],
+            color: theme.colors.grey[0],
             borderRadius: "8px",
             fontWeight: 500,
 

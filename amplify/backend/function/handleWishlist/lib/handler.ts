@@ -30,6 +30,8 @@ class WishlistEventHandler implements IWishlistEventHandler {
         return await this.createWishlist(event);
       case "PUT":
         return await this.updateWishlist(event);
+      case "DELETE":
+        return await this.deleteWishlist(event);
       default:
         return this.constructResponseObject(
           404,
@@ -157,7 +159,7 @@ class WishlistEventHandler implements IWishlistEventHandler {
         );
       }
 
-      const updatedWishlist = userWishlists.Item.wishlists[parsedBody.id];
+      const wishlistToUpdate = userWishlists.Item.wishlists[parsedBody.id];
 
       const command = new UpdateCommand({
         TableName: "usersWishlists-dev",
@@ -166,10 +168,10 @@ class WishlistEventHandler implements IWishlistEventHandler {
         },
         UpdateExpression: `SET wishlists.#wishlistKey = :updateWishlist`,
         ExpressionAttributeValues: {
-          ":updateWishlist": { ...updatedWishlist, ...parsedBody.updated },
+          ":updateWishlist": { ...wishlistToUpdate, ...parsedBody.updated },
         },
         ExpressionAttributeNames: {
-          "#wishlistKey": updatedWishlist.id,
+          "#wishlistKey": wishlistToUpdate.id,
         },
         ReturnValues: "ALL_NEW",
       });
@@ -180,8 +182,61 @@ class WishlistEventHandler implements IWishlistEventHandler {
         200,
         true,
         null,
-        response.Attributes.wishlists[updatedWishlist.id]
+        response.Attributes.wishlists[wishlistToUpdate.id]
       );
+    } catch (err) {
+      return this.constructResponseObject(
+        500,
+        false,
+        err.message || "Internal server error"
+      );
+    }
+  }
+  async deleteWishlist(event) {
+    try {
+      const userCognitoIdentityId =
+        event.requestContext.identity.cognitoIdentityId;
+
+      // //find wishlist
+      const userWishlists = await this.dbClient.send(
+        new GetCommand({
+          TableName: "usersWishlists-dev",
+          Key: {
+            cognitoIdentityId: userCognitoIdentityId,
+          },
+        })
+      );
+
+      if (!userWishlists.Item || !event.queryStringParameters.id) {
+        return this.constructResponseObject(
+          400,
+          false,
+          "User wishlists not found or wishlist id not provided."
+        );
+      }
+
+      const wishlistToDelete =
+        userWishlists.Item.wishlists[event.queryStringParameters.id];
+
+      if (!wishlistToDelete) {
+        return this.constructResponseObject(400, false, "Wishlist not found.");
+      }
+
+      const command = new UpdateCommand({
+        TableName: "usersWishlists-dev",
+        Key: {
+          cognitoIdentityId: event.requestContext.identity.cognitoIdentityId,
+        },
+        UpdateExpression: `REMOVE wishlists.#wishlistKey`,
+        ExpressionAttributeNames: {
+          "#wishlistKey": wishlistToDelete.id,
+        },
+        ReturnValues: "NONE",
+      });
+
+      await this.dbClient.send(command);
+
+      return this.constructResponseObject(200, true, null);
     } catch (err) {
       return this.constructResponseObject(
         500,

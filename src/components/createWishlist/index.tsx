@@ -21,7 +21,7 @@ const CreateWishlist = () => {
       return;
     } else {
       try {
-        post({
+        const result = post({
           apiName: "wishlistAPI",
           path: "/wishlist",
           options: {
@@ -30,6 +30,8 @@ const CreateWishlist = () => {
             },
           },
         });
+
+        await result.response;
 
         close();
         setWishlistName("");
