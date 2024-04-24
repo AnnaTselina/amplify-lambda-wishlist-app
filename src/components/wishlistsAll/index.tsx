@@ -4,7 +4,7 @@ import { Card, Flex, Text } from "@mantine/core";
 
 const WishlistsAll = ({ wishlists }: { wishlists: IWishlist[] }) => {
   return wishlists.length ? (
-    <Flex mt="md" justify="space-between">
+    <Flex mt="md" justify="space-between" gap="sm" wrap="wrap">
       {wishlists.map((wishlist) => (
         <Card
           shadow="sm"

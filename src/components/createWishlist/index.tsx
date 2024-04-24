@@ -6,11 +6,14 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { post } from "aws-amplify/api";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const CreateWishlist = () => {
   const [modalOpened, { open, close }] = useDisclosure(false);
   const [wishlistName, setWishlistName] = useState("");
   const [wishlistNameError, setWishlistNameError] = useState(false);
+
+  const router = useRouter();
 
   const handleCreateWishlist = async () => {
     if (!wishlistName.length) {
@@ -18,7 +21,7 @@ const CreateWishlist = () => {
       return;
     } else {
       try {
-        const restOperation = post({
+        post({
           apiName: "wishlistAPI",
           path: "/wishlist",
           options: {
@@ -28,12 +31,10 @@ const CreateWishlist = () => {
           },
         });
 
-        const { body } = await restOperation.response;
-        const response = await body.json();
-        // TODO: put new list in local state manager
-
         close();
         setWishlistName("");
+
+        router.refresh();
       } catch (e: any) {
         toast.error(
           JSON.parse(e.response?.body)?.message ||
