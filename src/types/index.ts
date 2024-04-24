@@ -7,3 +7,8 @@ export enum AmplifySignUpResult {
   COMPLETE_AUTO_SIGN_IN = "COMPLETE_AUTO_SIGN_IN",
   DONE = "DONE",
 }
+
+export interface IWishlist {
+  id: string;
+  name: string;
+}

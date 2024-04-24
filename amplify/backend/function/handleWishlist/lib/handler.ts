@@ -24,6 +24,8 @@ class WishlistEventHandler implements IWishlistEventHandler {
   }
   async handleRoute(event) {
     switch (event.httpMethod) {
+      case "GET":
+        return await this.getWishlists(event);
       case "POST":
         return await this.createWishlist(event);
       default:
@@ -98,8 +100,29 @@ class WishlistEventHandler implements IWishlistEventHandler {
       return this.constructResponseObject(
         201,
         true,
+        null,
         response.Attributes.wishlists
       );
+    } catch (err) {
+      return this.constructResponseObject(
+        500,
+        false,
+        err.message || "Internal server error"
+      );
+    }
+  }
+  async getWishlists(event) {
+    try {
+      const wishlists = await this.dbClient.send(
+        new GetCommand({
+          TableName: "usersWishlists-dev",
+          Key: {
+            cognitoIdentityId: event.requestContext.identity.cognitoIdentityId,
+          },
+        })
+      );
+
+      return this.constructResponseObject(200, true, null, wishlists.Item);
     } catch (err) {
       return this.constructResponseObject(
         500,
