@@ -1,0 +1,10 @@
+{
+  "resourceName": "usersWishlists",
+  "tableName": "usersWishlists",
+  "partitionKey": {
+    "fieldName": "cognitoIdentityId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

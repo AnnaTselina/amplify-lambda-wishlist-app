@@ -1,6 +1,5 @@
-import { PutCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import { v4 as uuidv4 } from "uuid";
 import { IWishlistEventHandler } from "./types";
 
 class WishlistEventHandler implements IWishlistEventHandler {
@@ -16,11 +15,11 @@ class WishlistEventHandler implements IWishlistEventHandler {
   constructor(dbClient: DynamoDBDocumentClient) {
     this.dbClient = dbClient;
   }
-  constructResponseObject(status, success, message?) {
+  constructResponseObject(status, success, message?, data?) {
     return {
       ...this.responseObject,
       statusCode: status,
-      body: JSON.stringify({ success, message }),
+      body: JSON.stringify({ success, message, data }),
     };
   }
   async handleRoute(event) {
@@ -46,17 +45,61 @@ class WishlistEventHandler implements IWishlistEventHandler {
       );
     }
 
+    const userCognitoIdentityId =
+      event.requestContext.identity.cognitoIdentityId;
+
     try {
-      await this.dbClient.send(
-        new PutCommand({
-          TableName: "WishlistsTable-dev",
-          Item: {
-            id: uuidv4(),
-            name: wishlistName,
+      //check if there is user and create if there is no
+      const user = await this.dbClient.send(
+        new GetCommand({
+          TableName: "usersWishlists-dev",
+          Key: {
+            cognitoIdentityId: userCognitoIdentityId,
           },
         })
       );
-      return this.constructResponseObject(201, true);
+
+      if (!user.Item) {
+        await this.dbClient.send(
+          new PutCommand({
+            TableName: "usersWishlists-dev",
+            Item: {
+              cognitoIdentityId: userCognitoIdentityId,
+              wishlists: {},
+            },
+          })
+        );
+      }
+
+      const timestamp = new Date().getTime() * 1000;
+
+      const newWishlist = {
+        name: wishlistName,
+        id: `wishlist#${timestamp}`,
+      };
+
+      const command = new UpdateCommand({
+        TableName: "usersWishlists-dev",
+        Key: {
+          cognitoIdentityId: userCognitoIdentityId,
+        },
+        UpdateExpression: `SET wishlists.#wishlistKey = :newWishlist`,
+        ExpressionAttributeValues: {
+          ":newWishlist": newWishlist,
+        },
+        ExpressionAttributeNames: {
+          "#wishlistKey": newWishlist.id,
+        },
+        ReturnValues: "UPDATED_NEW",
+      });
+
+      const response = await this.dbClient.send(command);
+
+      return this.constructResponseObject(
+        201,
+        true,
+        response.Attributes.wishlists
+      );
     } catch (err) {
       return this.constructResponseObject(
         500,

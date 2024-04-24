@@ -72,7 +72,7 @@
     }
   },
   "storage": {
-    "WishlistsTable": {
+    "usersWishlists": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     }

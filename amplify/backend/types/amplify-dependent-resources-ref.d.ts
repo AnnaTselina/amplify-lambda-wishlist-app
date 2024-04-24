@@ -29,7 +29,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "WishlistsTable": {
+    "usersWishlists": {
       "Arn": "string",
       "Name": "string",
       "PartitionKeyName": "string",
